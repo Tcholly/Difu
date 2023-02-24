@@ -24,31 +24,38 @@
 
 namespace Logger
 {
+	void Log(std::string message);
+	void Bind(void(*func)(std::string));
+
 	template <typename... T>
 	void Debug(std::string message, T&&... args)
 	{
-		std::string finalMessage = fmt::format(message, args...);
-		std::cout << "[DEBUG]: " << finalMessage << std::endl;
+		std::string finalMessage = "[DEBUG]: " + fmt::format(message, args...);
+		std::cout << finalMessage << std::endl;
+		Log(finalMessage);
 	}
     
 	template <typename... T>
 	void Info(std::string message, T&&... args)
 	{
-		std::string finalMessage = fmt::format(message, args...);
-		std::cout << CONSOLE_GREEN "[INFO]: " << finalMessage << CONSOLE_WHITE << std::endl;
+		std::string finalMessage = "[INFO]: " + fmt::format(message, args...);
+		std::cout << CONSOLE_GREEN << finalMessage << CONSOLE_WHITE << std::endl;
+		Log(finalMessage);
 	}
     
 	template <typename... T>
 	void Warn(std::string message, T&&... args)
 	{
-		std::string finalMessage = fmt::format(message, args...);
-		std::cout << CONSOLE_YELLOW "[WARNING]: " << finalMessage << CONSOLE_WHITE << std::endl;
+		std::string finalMessage = "[WARNING]: " + fmt::format(message, args...);
+		std::cout << CONSOLE_YELLOW << finalMessage << CONSOLE_WHITE << std::endl;
+		Log(finalMessage);
 	}
 
 	template <typename... T>
 	void Error(std::string message, T&&... args)
 	{
-		std::string finalMessage = fmt::format(message, args...);
-		std::cout << CONSOLE_RED "[ERROR]: " << finalMessage << CONSOLE_WHITE << std::endl;
+		std::string finalMessage = "[ERROR]: " + fmt::format(message, args...);
+		std::cout << CONSOLE_RED << finalMessage << CONSOLE_WHITE << std::endl;
+		Log(finalMessage);
 	}
 } // namespace Logger
