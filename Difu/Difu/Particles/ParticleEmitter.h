@@ -41,58 +41,58 @@ public:
     void StartEmitting();
     void StopEmitting();
     void ToggleEmitting();
-    bool IsEmitting();
+    bool IsEmitting() const;
     void EmitNow(int quantity);
 
-    Vector2 GetSpawnPosition();
+    Vector2 GetSpawnPosition() const;
     void SetSpawnPosition(Vector2 position);
 
-    Vector2 GetSpawnVelocity();
+    Vector2 GetSpawnVelocity() const;
     void SetSpawnVelocity(Vector2 velocity);
 
-    Vector2 GetParticleAcceleration();
+    Vector2 GetParticleAcceleration() const;
     void SetParticleAcceleration(Vector2 acceleration);
 
-    float GetCentripetalAcceleration();
+    float GetCentripetalAcceleration() const;
     void SetCentripetalAcceleration(float acceleration);
 
-    float GetParticleSpawnRotation();
+    float GetParticleSpawnRotation() const;
     void SetParticleSpawnRotation(float rotation);
 
-    float GetParticleSpawnRotationVelocity();
+    float GetParticleSpawnRotationVelocity() const;
     void SetParticleSpawnRotationVelocity(float velocity);
 
-    float GetParticleRotationAcceleration();
+    float GetParticleRotationAcceleration() const;
     void SetParticleRotationAcceleration(float acceleration);
 
-    float GetRandomness();
+    float GetRandomness() const;
     void SetRandomness(float randomness);
 
-    float GetSpread();
+    float GetSpread() const;
     void SetSpread(float spradValue);
 
-    float GetParticleLifetime();
+    float GetParticleLifetime() const;
     void SetParticleLifetime(float lifetime);
 
-    float GetSpawnInterval();
+    float GetSpawnInterval() const;
     void SetSpawnInterval(float interval);
 
-    Color GetStartColor();
+    Color GetStartColor() const;
     void SetStartColor(Color color);
 
-    Color GetEndColor();
+    Color GetEndColor() const;
     void SetEndColor(Color color);
 
-    Vector2 GetParticleResolution();
+    Vector2 GetParticleResolution() const;
     void SetParticleResolution(Vector2 resolution);
 
-    float GetParticleMinSizeFactor();
+    float GetParticleMinSizeFactor() const;
     void SetParticleMinSizeFactor(float factor);
 
-    float GetParticleMaxSizeFactor();
+    float GetParticleMaxSizeFactor() const;
     void SetParticleMaxSizeFactor(float factor);
     
-    float GetParticleCount();
+    float GetParticleCount() const;
 	// Remove all particles
     void ClearParticles();
 

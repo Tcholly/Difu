@@ -97,7 +97,7 @@ void ParticleEmitter::ToggleEmitting()
     emitting = !emitting;
 }
 
-bool ParticleEmitter::IsEmitting()
+bool ParticleEmitter::IsEmitting() const
 {
     return emitting;
 }
@@ -127,7 +127,7 @@ void ParticleEmitter::EmitNow(int quantity)
     }
 }
 
-Vector2 ParticleEmitter::GetSpawnPosition()
+Vector2 ParticleEmitter::GetSpawnPosition() const
 {
     return spawnPosition;
 }
@@ -137,7 +137,7 @@ void ParticleEmitter::SetSpawnPosition(Vector2 position)
     spawnPosition = position;
 }
 
-Vector2 ParticleEmitter::GetSpawnVelocity()
+Vector2 ParticleEmitter::GetSpawnVelocity() const
 {
     return spawnVelocity;
 }
@@ -147,7 +147,7 @@ void ParticleEmitter::SetSpawnVelocity(Vector2 velocity)
     spawnVelocity = velocity;
 }
 
-Vector2 ParticleEmitter::GetParticleAcceleration()
+Vector2 ParticleEmitter::GetParticleAcceleration() const
 {
     return particleAcceleration;
 }
@@ -157,7 +157,7 @@ void ParticleEmitter::SetParticleAcceleration(Vector2 acceleration)
     particleAcceleration = acceleration;
 }
 
-float ParticleEmitter::GetCentripetalAcceleration()
+float ParticleEmitter::GetCentripetalAcceleration() const
 {
 	return  centripetalAcceleration;
 }
@@ -167,7 +167,7 @@ void ParticleEmitter::SetCentripetalAcceleration(float acceleration)
 	centripetalAcceleration = acceleration;
 }
 
-float ParticleEmitter::GetParticleSpawnRotation()
+float ParticleEmitter::GetParticleSpawnRotation() const
 {
     return spawnRotation;
 }
@@ -177,7 +177,7 @@ void ParticleEmitter::SetParticleSpawnRotation(float rotation)
 	spawnRotation = rotation;
 }
 
-float ParticleEmitter::GetParticleSpawnRotationVelocity()
+float ParticleEmitter::GetParticleSpawnRotationVelocity() const
 {
     return spawnRotationVelocity;
 }
@@ -187,7 +187,7 @@ void ParticleEmitter::SetParticleSpawnRotationVelocity(float velocity)
 	spawnRotationVelocity = velocity;
 }
 
-float ParticleEmitter::GetParticleRotationAcceleration()
+float ParticleEmitter::GetParticleRotationAcceleration() const
 {
     return particleRotationAcceleration;
 }
@@ -197,7 +197,7 @@ void ParticleEmitter::SetParticleRotationAcceleration(float acceleration)
     particleRotationAcceleration = acceleration;
 }
 
-float ParticleEmitter::GetRandomness()
+float ParticleEmitter::GetRandomness() const
 {
     return randomness;
 }
@@ -207,7 +207,7 @@ void ParticleEmitter::SetRandomness(float randomValue)
     randomness = randomValue;
 }
 
-float ParticleEmitter::GetSpread()
+float ParticleEmitter::GetSpread() const
 {
     return spread;
 }
@@ -217,7 +217,7 @@ void ParticleEmitter::SetSpread(float spradValue)
     spread = spradValue;
 }
 
-float ParticleEmitter::GetParticleLifetime()
+float ParticleEmitter::GetParticleLifetime() const
 {
     return lifetime;
 }
@@ -227,7 +227,7 @@ void ParticleEmitter::SetParticleLifetime(float _lifetime)
     lifetime = _lifetime;
 }
 
-float ParticleEmitter::GetSpawnInterval()
+float ParticleEmitter::GetSpawnInterval() const
 {
     return spawnInterval;
 }
@@ -237,7 +237,7 @@ void ParticleEmitter::SetSpawnInterval(float interval)
     spawnInterval = interval;
 }
 
-Color ParticleEmitter::GetStartColor()
+Color ParticleEmitter::GetStartColor() const
 {
     return startColor;
 }
@@ -247,16 +247,17 @@ void ParticleEmitter::SetStartColor(Color color)
     startColor = color;
 }
 
-Color ParticleEmitter::GetEndColor()
+Color ParticleEmitter::GetEndColor() const
 {
     return endColor;
 }
+
 void ParticleEmitter::SetEndColor(Color color)
 {
     endColor = color;
 }
 
-Vector2 ParticleEmitter::GetParticleResolution()
+Vector2 ParticleEmitter::GetParticleResolution() const
 {
     return particleResolution;
 }
@@ -266,7 +267,7 @@ void ParticleEmitter::SetParticleResolution(Vector2 resolution)
     particleResolution = resolution;
 }
 
-float ParticleEmitter::GetParticleMinSizeFactor()
+float ParticleEmitter::GetParticleMinSizeFactor() const
 {
     return particleMinSizeFactor;
 }
@@ -276,7 +277,7 @@ void ParticleEmitter::SetParticleMinSizeFactor(float factor)
     particleMinSizeFactor = factor;
 }
 
-float ParticleEmitter::GetParticleMaxSizeFactor()
+float ParticleEmitter::GetParticleMaxSizeFactor() const
 {
     return particleMaxSizeFactor;
 }
@@ -287,7 +288,7 @@ void ParticleEmitter::SetParticleMaxSizeFactor(float factor)
 }
 
 
-float ParticleEmitter::GetParticleCount()
+float ParticleEmitter::GetParticleCount() const
 {
     return particles.size();
 }
