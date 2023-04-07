@@ -3,4 +3,5 @@
 /obj
 compile_commands.json
 Difu.make
+Sandbox.make
 Makefile

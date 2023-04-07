@@ -26,7 +26,8 @@ project "Difu"
     includedirs {
 		"Difu",
         "Dependencies/Raylib/%{cfg.system}/include",
-        "Dependencies/fmt/%{cfg.system}/include"
+        "Dependencies/fmt/%{cfg.system}/include",
+		"Dependencies/entt/include"
     }
 
     libdirs { 
@@ -44,5 +45,24 @@ project "Difu"
 	postbuildcommands {
 		"{MKDIR} bin/%{prj.name}/%{cfg.longname}/include",
 		"{CHDIR} Difu/ && find . -name '*.h' -exec cp -f --parents '{}' ../bin/%{prj.name}/%{cfg.longname}/include ';'",
-		-- "{COPYFILE} --parents **/*.h '../../bin/%{prj.name}/%{cfg.longname}/include/Difu/'"
 	}
+
+project "Sandbox"
+    kind "ConsoleApp"
+    files "Sandbox/**"
+
+    includedirs {
+		"Sandbox/src",
+		"Difu",
+        "Dependencies/Raylib/%{cfg.system}/include",
+        "Dependencies/fmt/%{cfg.system}/include",
+		"Dependencies/entt/include"
+    }
+
+    libdirs { 
+		"bin/Difu/%{cfg.longname}",
+        "Dependencies/Raylib/%{cfg.system}/lib",
+        "Dependencies/fmt/%{cfg.system}/lib",
+    }
+
+	links { "Difu", "raylib", "fmt" } -- , "m", "dl", "rt", "X11"

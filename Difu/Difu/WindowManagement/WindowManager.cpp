@@ -1,6 +1,7 @@
 #include "WindowManager.h"
 
 #include "Difu/ScreenManagement/ScreenManager.h"
+#include "Difu/ECS/ECSManager.h"
 #include "Difu/Utils/Logger.h"
 
 static bool gameRunning;
@@ -38,9 +39,11 @@ void WindowManager::RunWindow()
 		if (IsWindowResized())
 			ScreenManager::OnResize();
 		ScreenManager::UpdateScreen();
+		ECS::Update(GetFrameTime());
 
 		BeginDrawing();
 		ScreenManager::RenderScreen();
+		ECS::Render();
 		ScreenManager::UpdateAndRenderTransitions();
 		EndDrawing();
 	}
