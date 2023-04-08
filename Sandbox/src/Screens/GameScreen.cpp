@@ -25,13 +25,19 @@ namespace GameScreen
 		rect_component.color = RED;
 		rect_component.size = {50.0f, 50.0f};
 
+		auto& layer_component = player.AddComponent<RenderLayerComponent>();
+		layer_component.layer = 2;
+
 		auto& random_transform = random_ent.AddComponent<Transform2DComponent>();
-		random_transform.position = {400.0f, 200.0f};
+		random_transform.position = {200.0f, 200.0f};
 		// random_transform.scale = {1.0f, 1.0f};
 
 		auto& circle_component = random_ent.AddComponent<CircleRendererComponent>();
 		circle_component.color = GREEN;
 		circle_component.radius = 20.0f;
+
+		auto& random_layer_component = random_ent.AddComponent<RenderLayerComponent>();
+		random_layer_component.layer = 1;
 	}
 
 	void Unload()

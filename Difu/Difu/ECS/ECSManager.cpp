@@ -2,12 +2,43 @@
 
 #include "Components.h"
 
+#include <map>
 #include <raylib.h>
 
 namespace ECS
 {
 	static entt::registry registry;
 
+	namespace Renderer
+	{
+		static void RenderTexture(entt::entity entity)
+		{
+				Transform2DComponent& transform = registry.get<Transform2DComponent>(entity);
+				TextureRendererComponent& renderer = registry.get<TextureRendererComponent>(entity);
+	
+				Rectangle dest_rect = {transform.position.x, transform.position.y, (float)renderer.texture.width * transform.scale.x, (float)renderer.texture.height * transform.scale.y};
+				DrawTexturePro(renderer.texture, renderer.source_rectangle, dest_rect, {dest_rect.width / 2.0f, dest_rect.height / 2.0f}, RAD2DEG * transform.rotation, WHITE);
+		}
+
+		static void RenderRectangle(entt::entity entity)
+		{
+			Transform2DComponent& transform = registry.get<Transform2DComponent>(entity);
+			RectangleRendererComponent& renderer = registry.get<RectangleRendererComponent>(entity);
+
+			Rectangle dest_rect = {transform.position.x, transform.position.y, renderer.size.x * transform.scale.x, renderer.size.y * transform.scale.y};
+			DrawRectanglePro(dest_rect, {dest_rect.width / 2.0f, dest_rect.height / 2.0f}, RAD2DEG * transform.rotation, renderer.color);
+		}
+
+		static void RenderCircle(entt::entity entity)
+		{
+			Transform2DComponent& transform = registry.get<Transform2DComponent>(entity);
+			CircleRendererComponent& renderer = registry.get<CircleRendererComponent>(entity);
+
+			DrawEllipse((int)transform.position.x, (int)transform.position.y, renderer.radius * transform.scale.x, renderer.radius * transform.scale.y, renderer.color);
+		}
+	} // namespace Renderer
+
+	// Entity -----------------------------------------------------
 	Entity::Entity(entt::entity entity, entt::registry* _registry) 
 		: entity_handle(entity), registry_ref(_registry)
 	{
@@ -24,6 +55,8 @@ namespace ECS
 		registry_ref->destroy(entity_handle);
 	}
 
+	// ------------------------------------------------------------
+
 
 	entt::registry& GetRegistry()
 	{
@@ -37,36 +70,61 @@ namespace ECS
 
 	void Render()
 	{
-		// Draw textures 
-		auto texture_renderer_view = registry.view<Transform2DComponent, TextureRendererComponent>();
-		for (auto entity : texture_renderer_view)
-		{
-			Transform2DComponent& transform = texture_renderer_view.get<Transform2DComponent>(entity);
-			TextureRendererComponent& renderer = texture_renderer_view.get<TextureRendererComponent>(entity);
+		{ // No Layer
+			// Draw textures 
+			auto texture_renderer_view = registry.view<Transform2DComponent, TextureRendererComponent>(entt::exclude<RenderLayerComponent>);
+			for (auto entity : texture_renderer_view)
+				Renderer::RenderTexture(entity);
 
-			Rectangle dest_rect = {transform.position.x, transform.position.y, (float)renderer.texture.width * transform.scale.x, (float)renderer.texture.height * transform.scale.y};
-			DrawTexturePro(renderer.texture, renderer.source_rectangle, dest_rect, {dest_rect.width / 2.0f, dest_rect.height / 2.0f}, RAD2DEG * transform.rotation, WHITE);
+			// Draw rectangles
+			auto rect_renderer_view = registry.view<Transform2DComponent, RectangleRendererComponent>(entt::exclude<RenderLayerComponent>);
+			for (auto entity : rect_renderer_view)
+				Renderer::RenderRectangle(entity);
+
+			// Draw circles
+			auto circle_renderer_view = registry.view<Transform2DComponent, CircleRendererComponent>(entt::exclude<RenderLayerComponent>);
+			for (auto entity : circle_renderer_view)
+				Renderer::RenderCircle(entity);
 		}
 
-		// Draw rectangles
-		auto rect_renderer_view = registry.view<Transform2DComponent, RectangleRendererComponent>();
-		for (auto entity : rect_renderer_view)
+		auto render_layer_view = registry.view<RenderLayerComponent>();
+		std::map<char, bool> active_layers;
+		for (auto entity : render_layer_view)
 		{
-			Transform2DComponent& transform = rect_renderer_view.get<Transform2DComponent>(entity);
-			RectangleRendererComponent& renderer = rect_renderer_view.get<RectangleRendererComponent>(entity);
-
-			Rectangle dest_rect = {transform.position.x, transform.position.y, renderer.size.x * transform.scale.x, renderer.size.y * transform.scale.y};
-			DrawRectanglePro(dest_rect, {dest_rect.width / 2.0f, dest_rect.height / 2.0f}, RAD2DEG * transform.rotation, renderer.color);
+			const RenderLayerComponent& layer_component = render_layer_view.get<RenderLayerComponent>(entity);
+			active_layers[layer_component.layer] = true;	
 		}
 
-		// Draw circles
-		auto circle_renderer_view = registry.view<Transform2DComponent, CircleRendererComponent>();
-		for (auto entity : circle_renderer_view)
-		{
-			Transform2DComponent& transform = circle_renderer_view.get<Transform2DComponent>(entity);
-			CircleRendererComponent& renderer = circle_renderer_view.get<CircleRendererComponent>(entity);
+		{ // Layers
+		  	for (const auto& [key, value] : active_layers)
+			{
+				// Draw textures 
+				auto texture_renderer_view = registry.view<Transform2DComponent, TextureRendererComponent, RenderLayerComponent>();
+				for (auto entity : texture_renderer_view)
+				{
+					const RenderLayerComponent& layer_component = texture_renderer_view.get<RenderLayerComponent>(entity);
+					if (layer_component.layer == key)
+						Renderer::RenderTexture(entity);
+				}
 
-			DrawEllipse((int)transform.position.x, (int)transform.position.y, renderer.radius * transform.scale.x, renderer.radius * transform.scale.y, renderer.color);
+				// Draw rectangles
+				auto rect_renderer_view = registry.view<Transform2DComponent, RectangleRendererComponent, RenderLayerComponent>();
+				for (auto entity : rect_renderer_view)
+				{
+					const RenderLayerComponent& layer_component = texture_renderer_view.get<RenderLayerComponent>(entity);
+					if (layer_component.layer == key)
+						Renderer::RenderRectangle(entity);
+				}
+
+				// Draw circles
+				auto circle_renderer_view = registry.view<Transform2DComponent, CircleRendererComponent, RenderLayerComponent>();
+				for (auto entity : circle_renderer_view)
+				{
+					const RenderLayerComponent& layer_component = texture_renderer_view.get<RenderLayerComponent>(entity);
+					if (layer_component.layer == key)
+						Renderer::RenderCircle(entity);
+				}
+			}
 		}
 	}
 

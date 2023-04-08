@@ -15,6 +15,11 @@ struct Transform2DComponent
 	Vector2 scale = {1.0f, 1.0f};
 };
 
+struct RenderLayerComponent
+{
+	char layer;
+};
+
 struct RectangleRendererComponent
 {
 	Color color;
