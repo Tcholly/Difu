@@ -71,6 +71,10 @@ namespace GameScreen
 
 		player_transform.rotation += 5 * dt;
 		player_transform.scale.y = std::sin(time * 10) + 1;
+
+		ECS::Entity particle_ent = ECS::FindEntityByTag("Emitter");
+		Transform2DComponent& emitter_transform = particle_ent.GetComponent<Transform2DComponent>();
+		emitter_transform.scale.x = (std::sin(time * 5) + 2) * 10;
 	}
 
 	void Render()

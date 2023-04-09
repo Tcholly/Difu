@@ -1,6 +1,7 @@
 #include "ECSManager.h"
 
 #include "Components.h"
+#include "Difu/Utils/Logger.h"
 #include "Difu/Utils/MathExtension.h"
 
 #include <map>
@@ -101,6 +102,7 @@ namespace ECS
 
     		for (Particle particle : emitter.particles)
     		{
+				// TODO: Rotate particles to match emitter transfor rotation
     		    float lifeProgress = 1.0f - particle.lifetime / emitter.lifetime;
     		    Color color = LerpColor(particle.startColor, particle.endColor, lifeProgress); 
     		    Rectangle rect;
@@ -108,7 +110,7 @@ namespace ECS
 				rect.y = particle.position.y + transform.position.y;
 				rect.width = particle.size.x * transform.scale.x;
 				rect.height = particle.size.y * transform.scale.y;
-    		    DrawRectanglePro(rect, {rect.width / 2.0f, rect.height / 2.0f}, RAD2DEG * (particle.rotation + transform.rotation), color);
+    		    DrawRectanglePro(rect, {rect.width / 2.0f, rect.height / 2.0f}, RAD2DEG * particle.rotation, color);
     		}
 		}
 	} // namespace Renderer
@@ -216,6 +218,20 @@ namespace ECS
 				}
 			}
 		}
+	}
+	
+	Entity FindEntityByTag(const std::string &tag)
+	{
+		auto tag_view = registry.view<TagComponent>();
+		for (auto entity : tag_view)
+		{
+			TagComponent& tag_component = tag_view.get<TagComponent>(entity);
+			if (tag_component.tag == tag)
+				return {entity, &registry};
+		}
+
+		LOG_WARN("Couldn't find entity with tag \"{}\"", tag);
+		return {entt::null, &registry};
 	}
 
 	Entity CreateEntity(const std::string& tag)

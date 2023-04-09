@@ -64,6 +64,6 @@ namespace ECS
 	void Update(float dt);
 	void Render();
 
-
 	Entity CreateEntity(const std::string& tag = std::string());
+	Entity FindEntityByTag(const std::string& tag);
 } // namespace ECS
