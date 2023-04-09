@@ -3,6 +3,8 @@
 #include <string>
 #include <raylib.h>
 
+#include "Difu/Particles/ParticleEmitter.h"
+
 struct TagComponent
 {
 	std::string tag;

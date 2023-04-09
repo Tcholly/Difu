@@ -16,6 +16,7 @@ namespace GameScreen
 		
 		player = ECS::CreateEntity("Player");
 		ECS::Entity random_ent = ECS::CreateEntity();
+		ECS::Entity particle_ent = ECS::CreateEntity("Emitter");
 
 		auto& player_transform = player.AddComponent<Transform2DComponent>();
 		player_transform.position = {200.0f, 200.0f};
@@ -38,6 +39,23 @@ namespace GameScreen
 
 		auto& random_layer_component = random_ent.AddComponent<RenderLayerComponent>();
 		random_layer_component.layer = 1;
+
+		auto& emitter_transform = particle_ent.AddComponent<Transform2DComponent>();
+		emitter_transform.position = {200.0f, 200.0f};
+
+		auto& emitter_component = particle_ent.AddComponent<ParticleEmitterComponent>();
+		emitter_component.spawnVelocity = {0.0f, 100.0f};
+		emitter_component.particleAcceleration = {1.0f, -30.0f};
+		emitter_component.startColor = BLACK;
+		emitter_component.endColor = WHITE;
+		emitter_component.particleMaxSizeFactor = 10;
+		emitter_component.lifetime = 5.0f;
+		emitter_component.spawnInterval = 0.1f;
+		emitter_component.spread = 3.14159265;
+		emitter_component.StartEmitting();
+
+		auto& emitter_layer_component = particle_ent.AddComponent<RenderLayerComponent>();
+		emitter_layer_component.layer = 3;
 	}
 
 	void Unload()
