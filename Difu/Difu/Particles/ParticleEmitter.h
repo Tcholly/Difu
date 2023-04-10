@@ -51,6 +51,8 @@ struct ParticleEmitterComponent
 
 	bool emitting = false;
 
+	~ParticleEmitterComponent();
+	
 	void StartEmitting();
 	void StopEmitting();
 	void ToggleEmitting();

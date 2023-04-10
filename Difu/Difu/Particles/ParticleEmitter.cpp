@@ -6,6 +6,11 @@
 
 static Random random_generator;
 
+ParticleEmitterComponent::~ParticleEmitterComponent()
+{
+	ClearParticles();
+}
+
 void ParticleEmitterComponent::StartEmitting()
 {
     emitting = true;

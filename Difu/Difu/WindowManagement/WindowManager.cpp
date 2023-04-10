@@ -5,7 +5,7 @@
 #include "Difu/Utils/Logger.h"
 
 static bool gameRunning;
-
+static Color clear_color = WHITE;
 
 bool WindowManager::InitWindow(const std::string& title, int width, int height, bool resizable)
 {
@@ -42,8 +42,11 @@ void WindowManager::RunWindow()
 		ECS::Update(GetFrameTime());
 
 		BeginDrawing();
-		ScreenManager::RenderScreen();
+		ClearBackground(clear_color);
+		BeginMode2D(ECS::GetPrimaryCamera());
 		ECS::Render();
+		EndMode2D();
+		ScreenManager::RenderScreen();
 		ScreenManager::UpdateAndRenderTransitions();
 		EndDrawing();
 	}
@@ -61,4 +64,9 @@ void WindowManager::CloseWindow()
 Vector2 WindowManager::GetWindowSize()
 {
     return {(float)GetScreenWidth(), (float)GetScreenHeight()};
+}
+
+void WindowManager::SetBackgroundColor(Color color)
+{
+	clear_color = color;
 }

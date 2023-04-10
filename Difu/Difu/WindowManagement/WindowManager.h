@@ -10,4 +10,5 @@ namespace WindowManager
 	void CloseWindow();
 
 	Vector2 GetWindowSize();
+	void SetBackgroundColor(Color color);
 } // namespace WindowManager

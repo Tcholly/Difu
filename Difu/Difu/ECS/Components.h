@@ -31,6 +31,12 @@ struct ScriptComponent
 	void(*OnRender)(ECS::Entity) = nullptr;
 };
 
+struct Camera2DComponent
+{
+	Camera2D camera;
+	bool is_primary = false;
+};
+
 struct RenderLayerComponent
 {
 	char layer;

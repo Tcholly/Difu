@@ -88,8 +88,6 @@ namespace GameScreen
 
 	void Render()
 	{
-		ClearBackground(WHITE);
-	
 		DrawText("HELLO WORLD?", 100, 100, 30, GRAY);
 	}
 

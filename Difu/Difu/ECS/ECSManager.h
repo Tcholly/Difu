@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Difu/Utils/Logger.h"
+
+#include <raylib.h>
 #include <entt.hpp>
 #include <string>
 
@@ -63,6 +65,8 @@ namespace ECS
 
 	void Update(float dt);
 	void Render();
+
+	Camera2D GetPrimaryCamera();
 
 	Entity CreateEntity(const std::string& tag = std::string());
 	Entity FindEntityByTag(const std::string& tag);

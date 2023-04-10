@@ -272,6 +272,19 @@ namespace ECS
 			}
 		}
 	}
+
+	Camera2D GetPrimaryCamera()
+	{
+		auto camera_view = registry.view<Camera2DComponent>();
+		for (auto entity : camera_view)
+		{
+			Camera2DComponent& camera = camera_view.get<Camera2DComponent>(entity);
+			if (camera.is_primary)
+				return camera.camera;
+		}
+
+		return {{0.0f, 0.0f}, {0.0f, 0.0f}, 0.0f, 1.0f};
+	}
 	
 	Entity FindEntityByTag(const std::string &tag)
 	{
