@@ -14,6 +14,16 @@ namespace ECS
 
 	namespace Updater
 	{
+		void UpdateScript(entt::entity entity, float dt)
+		{
+			if (registry.valid(entity))
+			{
+				ScriptComponent& script = registry.get<ScriptComponent>(entity);
+				if (script.OnUpdate)
+					script.OnUpdate({entity, &registry}, dt);
+			}
+		}
+
 		static void UpdateParticleEmitter(entt::entity entity, float dt)
 		{
 			ParticleEmitterComponent& emitter = registry.get<ParticleEmitterComponent>(entity);
@@ -60,6 +70,16 @@ namespace ECS
 
 	namespace Renderer
 	{
+		void RenderScript(entt::entity entity)
+		{
+			if (registry.valid(entity))
+			{
+				ScriptComponent& script = registry.get<ScriptComponent>(entity);
+				if (script.OnRender)
+					script.OnRender({entity, &registry});
+			}
+		}
+
 		static void RenderTexture(entt::entity entity)
 		{
 			Transform2DComponent& transform = registry.get<Transform2DComponent>(entity);
@@ -126,8 +146,23 @@ namespace ECS
 		return registry_ref->valid(entity_handle);
 	}
 
+	// template<>
+	// void Entity::RemoveComponent<ScriptComponent>()
+	// {
+	// 	if (HasComponent<ScriptComponent>())
+	// 	{
+	// 		ScriptComponent& script = registry_ref->get<ScriptComponent>(entity_handle);
+	// 		if (script.OnUnload)
+	// 			script.OnUnload(*this);
+	// 		registry_ref->erase<ScriptComponent>(entity_handle);
+	// 	}
+	// }
+
 	void Entity::Destroy()
 	{
+		// if (HasComponent<ScriptComponent>())
+		// 	RemoveComponent<ScriptComponent>();
+
 		registry_ref->destroy(entity_handle);
 	}
 
@@ -141,6 +176,10 @@ namespace ECS
 
 	void Update(float dt)
 	{
+		auto script_view = registry.view<ScriptComponent>();
+		for (auto entity : script_view)
+			Updater::UpdateScript(entity, dt);
+
 		auto particle_emitter_view = registry.view<ParticleEmitterComponent>();
 		for (auto entity : particle_emitter_view)
 			Updater::UpdateParticleEmitter(entity, dt);
@@ -149,6 +188,11 @@ namespace ECS
 	void Render()
 	{
 		{ // No Layer
+		  	// Scripts
+			auto script_view = registry.view<ScriptComponent>();
+			for (auto entity : script_view)
+				Renderer::RenderScript(entity);
+
 			// Draw textures 
 			auto texture_renderer_view = registry.view<Transform2DComponent, TextureRendererComponent>(entt::exclude<RenderLayerComponent>);
 			for (auto entity : texture_renderer_view)
@@ -181,6 +225,15 @@ namespace ECS
 		{ // Layers
 		  	for (const auto& [layer, value] : active_layers)
 			{
+		  		// Scripts
+				auto script_view = registry.view<ScriptComponent, RenderLayerComponent>();
+				for (auto entity : script_view)
+				{
+					const RenderLayerComponent& layer_component = script_view.get<RenderLayerComponent>(entity);
+					if (layer_component.layer == layer)
+						Renderer::RenderScript(entity);
+				}
+
 				// Draw textures 
 				auto texture_renderer_view = registry.view<Transform2DComponent, TextureRendererComponent, RenderLayerComponent>();
 				for (auto entity : texture_renderer_view)

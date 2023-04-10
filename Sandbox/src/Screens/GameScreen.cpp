@@ -10,6 +10,17 @@ namespace GameScreen
 {
 	static ECS::Entity player;
 
+	static float time;
+
+	void UpdatePlayer(ECS::Entity entity, float dt)
+	{
+		Transform2DComponent& player_transform = player.GetComponent<Transform2DComponent>();
+
+		player_transform.rotation += 5 * dt;
+		player_transform.scale.y = std::sin(time * 10) + 1;
+	}
+	
+
 	void Load()
 	{
 		SetTargetFPS(60);
@@ -28,6 +39,9 @@ namespace GameScreen
 
 		auto& layer_component = player.AddComponent<RenderLayerComponent>();
 		layer_component.layer = 2;
+
+		auto& player_script = player.AddComponent<ScriptComponent>();
+		player_script.OnUpdate = &UpdatePlayer;
 
 		auto& random_transform = random_ent.AddComponent<Transform2DComponent>();
 		random_transform.position = {200.0f, 200.0f};
@@ -62,15 +76,10 @@ namespace GameScreen
 	{
 	}
 
-	static float time;
 
 	void Update(float dt)
 	{
 		time += dt;
-		Transform2DComponent& player_transform = player.GetComponent<Transform2DComponent>();
-
-		player_transform.rotation += 5 * dt;
-		player_transform.scale.y = std::sin(time * 10) + 1;
 
 		ECS::Entity particle_ent = ECS::FindEntityByTag("Emitter");
 		Transform2DComponent& emitter_transform = particle_ent.GetComponent<Transform2DComponent>();

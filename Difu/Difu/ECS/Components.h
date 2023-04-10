@@ -5,6 +5,11 @@
 
 #include "Difu/Particles/ParticleEmitter.h"
 
+namespace ECS
+{
+	class Entity;
+}
+
 struct TagComponent
 {
 	std::string tag;
@@ -15,6 +20,15 @@ struct Transform2DComponent
 	Vector2 position;
 	float rotation;
 	Vector2 scale = {1.0f, 1.0f};
+};
+
+struct ScriptComponent
+{
+	// TODO: find way to insert OnLoad and OnUnload
+	// void(*OnLoad)(ECS::Entity) = nullptr;
+	// void(*OnUnload)(ECS::Entity) = nullptr;
+	void(*OnUpdate)(ECS::Entity, float) = nullptr;
+	void(*OnRender)(ECS::Entity) = nullptr;
 };
 
 struct RenderLayerComponent
