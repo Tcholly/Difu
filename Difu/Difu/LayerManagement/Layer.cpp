@@ -66,8 +66,11 @@ bool Layer::Update(float dt)
 
 void Layer::Render()
 {
+	SetMouseOffset(-x, -y);
 	rlPushMatrix();
 	rlTranslatef(x, y, 0);
 	OnRender();
 	rlPopMatrix();
+	// TODO: Set to previous offset
+	SetMouseOffset(0, 0);
 }
