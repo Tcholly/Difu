@@ -3,16 +3,16 @@
 
 namespace Logger
 {
-	static void(*coutFunc)(std::string) = nullptr;
+	static void(*cout_func)(LogLevel, std::string) = nullptr;
 
-	void Log(std::string message)
+	void Log(LogLevel level, std::string message)
 	{
-		if (coutFunc)
-			coutFunc(message);
+		if (cout_func)
+			cout_func(level, message);
 	}
 
-	void Bind(void (*func)(std::string))
+	void Bind(void (*func)(LogLevel, std::string))
 	{
-		coutFunc = func;
+		cout_func = func;
 	}
 }

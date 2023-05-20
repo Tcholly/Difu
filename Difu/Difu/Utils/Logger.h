@@ -24,38 +24,46 @@
 
 namespace Logger
 {
-	void Log(std::string message);
-	void Bind(void(*func)(std::string));
+	enum LogLevel
+	{
+		LOG_LEVEL_DEBUG,
+		LOG_LEVEL_INFO,
+		LOG_LEVEL_WARNING,
+		LOG_LEVEL_ERROR
+	};
+
+	void Log(LogLevel level, std::string message);
+	void Bind(void(*func)(LogLevel, std::string));
 
 	template <typename... T>
 	void Debug(std::string message, T&&... args)
 	{
-		std::string finalMessage = "[DEBUG]: " + fmt::format(message, args...);
-		std::cout << finalMessage << std::endl;
-		Log(finalMessage);
+		std::string final_message = fmt::format(message, args...);
+		std::cout << "[DEBUG]: " << final_message << std::endl;
+		Log(LogLevel::LOG_LEVEL_DEBUG, final_message);
 	}
     
 	template <typename... T>
 	void Info(std::string message, T&&... args)
 	{
-		std::string finalMessage = "[INFO]: " + fmt::format(message, args...);
-		std::cout << CONSOLE_GREEN << finalMessage << CONSOLE_WHITE << std::endl;
-		Log(finalMessage);
+		std::string final_message = fmt::format(message, args...);
+		std::cout << CONSOLE_GREEN << "[INFO]: " << final_message << CONSOLE_WHITE << std::endl;
+		Log(LogLevel::LOG_LEVEL_INFO, final_message);
 	}
     
 	template <typename... T>
 	void Warn(std::string message, T&&... args)
 	{
-		std::string finalMessage = "[WARNING]: " + fmt::format(message, args...);
-		std::cout << CONSOLE_YELLOW << finalMessage << CONSOLE_WHITE << std::endl;
-		Log(finalMessage);
+		std::string final_message = fmt::format(message, args...);
+		std::cout << CONSOLE_YELLOW << "[WARNING]: " << final_message << CONSOLE_WHITE << std::endl;
+		Log(LogLevel::LOG_LEVEL_WARNING, final_message);
 	}
 
 	template <typename... T>
 	void Error(std::string message, T&&... args)
 	{
-		std::string finalMessage = "[ERROR]: " + fmt::format(message, args...);
-		std::cout << CONSOLE_RED << finalMessage << CONSOLE_WHITE << std::endl;
-		Log(finalMessage);
+		std::string final_message = fmt::format(message, args...);
+		std::cout << CONSOLE_RED << "[ERROR]: " << final_message << CONSOLE_WHITE << std::endl;
+		Log(LogLevel::LOG_LEVEL_ERROR, final_message);
 	}
 } // namespace Logger
